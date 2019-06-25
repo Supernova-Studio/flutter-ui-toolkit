@@ -1,0 +1,16 @@
+.DS_Store
+.dart_tool/
+
+.packages
+.pub/
+
+build/
+ios/.generated/
+ios/Flutter/Generated.xcconfig
+ios/Runner/GeneratedPluginRegistrant.*
+
+# If you're building an application, you may want to check-in your pubspec.lock
+pubspec.lock
+
+.idea/
+*.iml
