@@ -1,15 +1,8 @@
 library supernova_flutter_ui_toolkit;
 
+import 'dart:ui';
+
 import 'package:flutter/animation.dart';
-
-
-List<Keyframe> _sorted(List<Keyframe> keyframes) {
-  keyframes.sort((lhs, rhs) {
-    return lhs.fraction.compareTo(rhs.fraction);
-  });
-
-  return keyframes;
-}
 
 class Interpolation<T> extends Animatable<T> {
 
@@ -51,9 +44,36 @@ class Interpolation<T> extends Animatable<T> {
       }
     }
 
-    double tweenLength = toKeyframe.fraction - fromKeyframe.fraction;
-    double currentTweenT = (t - fromKeyframe.fraction) / tweenLength;
-    return fromKeyframe.value + (toKeyframe.value - fromKeyframe.value) * currentTweenT;
+    double currentTweenT = (t - fromKeyframe.fraction) / (toKeyframe.fraction - fromKeyframe.fraction);
+    return this.performInterpolation(fromKeyframe, toKeyframe, currentTweenT);
+  }
+
+  T performInterpolation(Keyframe begin, Keyframe end, double t) {
+    return begin.value + (end.value - begin.value) * t;
+  }
+}
+
+class ColorInterpolation extends Interpolation<Color> {
+
+  ColorInterpolation({
+    List<Keyframe<Color>> keyframes
+  }): super(keyframes: keyframes);
+
+  @override
+  Color performInterpolation(Keyframe begin, Keyframe end, double t) {
+    return Color.lerp(begin.value, end.value, t);
+  }
+}
+
+class OffsetInterpolation extends Interpolation<Offset> {
+
+  OffsetInterpolation({
+    List<Keyframe<Offset>> keyframes
+  }): super(keyframes: keyframes);
+
+  @override
+  Offset performInterpolation(Keyframe begin, Keyframe end, double t) {
+    return Offset.lerp(begin.value, end.value, t);
   }
 }
 
@@ -66,4 +86,12 @@ class Keyframe<T> {
 
   final double fraction;
   final T value;
+}
+
+List<Keyframe> _sorted(List<Keyframe> keyframes) {
+  keyframes.sort((lhs, rhs) {
+    return lhs.fraction.compareTo(rhs.fraction);
+  });
+
+  return keyframes;
 }
