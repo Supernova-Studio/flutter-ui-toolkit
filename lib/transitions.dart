@@ -25,16 +25,16 @@ class DecorationTransition extends AnimatedWidget {
 
   final Widget child;
 
-  Animation<Color> colorAnimation;
+  final Animation<Color> colorAnimation;
 
-  Animation<Color> borderColorAnimation;
-  Animation<double> borderWidthAnimation;
+  final Animation<Color> borderColorAnimation;
+  final Animation<double> borderWidthAnimation;
 
-  Animation<double> cornerRadiusAnimation;
+  final Animation<double> cornerRadiusAnimation;
 
-  Animation<Color> shadowColorAnimation;
-  Animation<double> shadowRadiusAnimation;
-  Animation<Offset> shadowOffsetAnimation;
+  final Animation<Color> shadowColorAnimation;
+  final Animation<double> shadowRadiusAnimation;
+  final Animation<Offset> shadowOffsetAnimation;
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +77,8 @@ class TranslationTransition extends AnimatedWidget {
 
   final Widget child;
 
-  Animation<double> translationX;
-  Animation<double> translationY;
+  final Animation<double> translationX;
+  final Animation<double> translationY;
 
 
   @override
