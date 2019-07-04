@@ -47,60 +47,68 @@ class _MainScreenState extends State<MainScreen> with SingleTickerProviderStateM
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(this.widget.title),),
-      body: Stack(
-        children: <Widget>[
-          Center(
-            child: Container(
+      body: Container(
+        constraints: BoxConstraints.expand(),
+        child: Stack(
+          children: <Widget>[
+            Container(
               width: 100,
               height: 100,
               child: AnimatableRectangle(controller: this.controller),
-            )
-          ),
+            ),
 
-          Positioned(
-            right: 20,
-            bottom: 20,
-            child: FloatingActionButton(onPressed: () {
-              this.startAnimation();
-            }),
-          )
-        ],
-      ),
+            Positioned(
+              right: 20,
+              bottom: 20,
+              child: FloatingActionButton(onPressed: () {
+                this.startAnimation();
+              }),
+            )
+          ],
+        ),
+      )
     );
   }
 }
+
 
 class AnimatableRectangle extends StatelessWidget {
 
   AnimatableRectangle({
     Key key,
     AnimationController controller,
-  }): this._backgroundColorAnimation = ColorInterpolation(
-    keyframes: [
-      Keyframe(fraction: 0, value: Colors.black),
-      Keyframe(fraction: 0.3, value: Colors.yellow.shade500),
-      Keyframe(fraction: 0.6, value: Colors.red.shade500),
-      Keyframe(fraction: 1, value: Colors.blueAccent.shade400)
-    ]
-  ).animate(controller),
-  this._cornerRadiusAnimation = Interpolation(
+  }): this.translationX = Interpolation(
     keyframes: [
       Keyframe<double>(fraction: 0, value: 0),
-      Keyframe<double>(fraction: 0.3, value: 30),
-      Keyframe<double>(fraction: 0.6, value: 15),
-      Keyframe<double>(fraction: 1, value: 50)
+      Keyframe<double>(fraction: 0.25, value: 300),
+      Keyframe<double>(fraction: 0.5, value: 300),
+      Keyframe<double>(fraction: 0.75, value: 0),
+      Keyframe<double>(fraction: 1, value: 0),
     ]
   ).animate(controller),
-  super(key: key);
+    this.translationY = Interpolation(
+        keyframes: [
+          Keyframe<double>(fraction: 0, value: 0),
+          Keyframe<double>(fraction: 0.25, value: 0),
+          Keyframe<double>(fraction: 0.5, value: 300),
+          Keyframe<double>(fraction: 0.75, value: 300),
+          Keyframe<double>(fraction: 1, value: 0),
+        ]
+    ).animate(controller);
 
-  Animation<Color> _backgroundColorAnimation;
-  Animation<double> _cornerRadiusAnimation;
+  Animation<double> translationX;
+  Animation<double> translationY;
 
   @override
   Widget build(BuildContext context) {
-    return DecorationTransition(
-      cornerRadiusAnimation: this._cornerRadiusAnimation,
-      colorAnimation: this._backgroundColorAnimation,
+    return TranslationTransition(
+      translationX: translationX,
+      translationY: translationY,
+      child: Container(
+        width: 100,
+        height: 100,
+        color: Colors.black,
+      ),
     );
   }
 }

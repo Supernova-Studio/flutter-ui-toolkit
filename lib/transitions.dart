@@ -9,6 +9,7 @@ const Animation<Offset> _defaultOffsetAnimation = AlwaysStoppedAnimation(Offset.
 class DecorationTransition extends AnimatedWidget {
 
   DecorationTransition({
+    Key key,
     this.child,
     this.colorAnimation = _defaultColorAnimation,
     this.borderColorAnimation = _defaultColorAnimation,
@@ -17,7 +18,7 @@ class DecorationTransition extends AnimatedWidget {
     this.shadowColorAnimation = _defaultColorAnimation,
     this.shadowRadiusAnimation = _defaultDoubleAnimation,
     this.shadowOffsetAnimation = _defaultOffsetAnimation
-  }): super(listenable: Listenable.merge([
+  }): super(key: key, listenable: Listenable.merge([
     colorAnimation, borderColorAnimation, borderWidthAnimation, cornerRadiusAnimation,
     shadowColorAnimation, shadowRadiusAnimation, shadowOffsetAnimation
   ]));
@@ -56,6 +57,34 @@ class DecorationTransition extends AnimatedWidget {
         ]
       ),
 
+      child: this.child,
+    );
+  }
+}
+
+
+class TranslationTransition extends AnimatedWidget {
+
+  TranslationTransition({
+    Key key,
+    this.child,
+    this.translationX = _defaultDoubleAnimation,
+    this.translationY = _defaultDoubleAnimation,
+  }): super(key: key, listenable: Listenable.merge([
+    translationX, translationY
+  ]));
+
+
+  final Widget child;
+
+  Animation<double> translationX;
+  Animation<double> translationY;
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Transform.translate(
+      offset: Offset(this.translationX.value, this.translationY.value),
       child: this.child,
     );
   }
